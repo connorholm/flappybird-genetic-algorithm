@@ -1,78 +1,56 @@
-This is BibTeX, Version 0.99d (TeX Live 2022/Arch Linux)
+This is BibTeX, Version 0.99d (TeX Live 2022)
 Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: sample-sigplan.aux
 The style file: ACM-Reference-Format.bst
-Reallocated singl_function (elt_size=8) to 100 items from 50.
-Reallocated singl_function (elt_size=8) to 100 items from 50.
-Reallocated wiz_functions (elt_size=8) to 6000 items from 3000.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
 Database file #1: sample-base.bib
-Warning--entry type for "Bornmann2019" isn't style-file defined
---line 1612 of file sample-base.bib
-Warning--entry type for "AnzarootPBM14" isn't style-file defined
---line 1629 of file sample-base.bib
-Reallocated singl_function (elt_size=8) to 100 items from 50.
-Reallocated glb_str_ptr (elt_size=8) to 20 items from 10.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated glb_str_ptr (elt_size=4) to 20 items from 10.
 Reallocated global_strs (elt_size=200001) to 20 items from 10.
-Reallocated glb_str_end (elt_size=8) to 20 items from 10.
-Reallocated singl_function (elt_size=8) to 100 items from 50.
-Warning--empty organization in Ablamowicz07
-Warning--empty organization in UMassCitations
-Warning--empty chapter and pages in Editor00
-Warning--page numbers missing in Editor00a
-Warning--empty author in 2004:ITE:1009386.1010128
-Warning--empty address in Knuth97
-Warning--articleno or eid field, but no numpages field, in Lee05
-Warning--page numbers missing in both pages and numpages fields in Lee05
-Warning--articleno or eid, but no pages or numpages field in Lee05
+Reallocated glb_str_end (elt_size=4) to 20 items from 10.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
 Warning--unrecognized DOI value [99.9999/woot07-S422]
-Warning--articleno or eid field, but no numpages field, in rous08
-Warning--page numbers missing in both pages and numpages fields in rous08
-Warning--articleno or eid, but no pages or numpages field in rous08
-Warning--page numbers missing in both pages and numpages fields in SaeediJETC10
-Warning--unrecognized DOI value [99.9999/woot07-S422]
-Warning--empty organization in Thornburg01
-Warning--empty organization in TUGInstmem
-Warning--empty organization in TUGInstmem
-Warning--empty organization in CTANacmart
-You've used 38 entries,
+You've used 1 entry,
             5981 wiz_defined-function locations,
-            1921 strings with 26419 characters,
-and the built_in function-call counts, 34516 in all, are:
-= -- 4300
-> -- 816
-< -- 4
-+ -- 257
-- -- 328
-* -- 2318
-:= -- 3408
-add.period$ -- 203
-call.type$ -- 38
-change.case$ -- 218
-chr.to.int$ -- 36
-cite$ -- 55
-duplicate$ -- 3228
-empty$ -- 2290
-format.name$ -- 353
-if$ -- 8049
-int.to.chr$ -- 4
+            1639 strings with 20217 characters,
+and the built_in function-call counts, 1319 in all, are:
+= -- 140
+> -- 25
+< -- 0
++ -- 8
+- -- 9
+* -- 83
+:= -- 126
+add.period$ -- 5
+call.type$ -- 1
+change.case$ -- 5
+chr.to.int$ -- 1
+cite$ -- 1
+duplicate$ -- 125
+empty$ -- 87
+format.name$ -- 9
+if$ -- 288
+int.to.chr$ -- 2
 int.to.str$ -- 1
-missing$ -- 70
-newline$ -- 422
-num.names$ -- 259
-pop$ -- 1068
+missing$ -- 5
+newline$ -- 50
+num.names$ -- 9
+pop$ -- 40
 preamble$ -- 1
-purify$ -- 512
+purify$ -- 13
 quote$ -- 0
-skip$ -- 1190
+skip$ -- 50
 stack$ -- 0
-substring$ -- 2702
-swap$ -- 289
-text.length$ -- 51
+substring$ -- 114
+swap$ -- 15
+text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 912
-warning$ -- 19
-while$ -- 254
+type$ -- 30
+warning$ -- 1
+while$ -- 11
 width$ -- 0
-write$ -- 861
-(There were 21 warnings)
+write$ -- 64
+(There was 1 warning)
