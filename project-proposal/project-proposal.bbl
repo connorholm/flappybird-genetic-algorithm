@@ -37,21 +37,15 @@
 \providecommand\natexlab[1]{#1}
 \providecommand\showeprint[2][]{arXiv:#2}
 
-\bibitem[Smith(2010)]%
-        {Smith10}
-\bibfield{author}{\bibinfo{person}{Stan~W. Smith}.}
-  \bibinfo{year}{2010}\natexlab{}.
-\newblock \showarticletitle{An experiment in bibliographic mark-up: Parsing
-  metadata for XML export}. In \bibinfo{booktitle}{\emph{Proceedings of the
-  3rd. annual workshop on Librarians and Computers}}
-  \emph{(\bibinfo{series}{LAC '10}, Vol.~\bibinfo{volume}{3})},
-  \bibfield{editor}{\bibinfo{person}{Reginald~N. Smythe} {and}
-  \bibinfo{person}{Alexander Noble}} (Eds.). \bibinfo{publisher}{Paparazzi
-  Press}, \bibinfo{address}{Milan Italy}, \bibinfo{pages}{422--431}.
+\bibitem[Lee~Jacobson(2015)]%
+        {Jacobson}
+\bibfield{author}{\bibinfo{person}{Burak~Kanber Lee~Jacobson}.}
+  \bibinfo{year}{2015}\natexlab{}.
+\newblock \bibinfo{booktitle}{\emph{Genetic Algorithms in Java Basics}
+  (\bibinfo{edition}{1st.} ed.)}.
+\newblock \bibinfo{publisher}{New York, NY: Apress}, \bibinfo{address}{New
+  York, NY}.
 \newblock
-\urldef\tempurl%
-\url{https://doi.org/99.9999/woot07-S422}
-\showDOI{\tempurl}
 
 
 \end{thebibliography}

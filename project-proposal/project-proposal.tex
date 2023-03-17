@@ -170,13 +170,49 @@
 \maketitle
 \pagestyle{plain}
 
-\section{Testing}
-Basic format with working bibliography \cite{Smith10}
+\section{Introduction}
+Our project proposal revolves around the idea of using genetic algorithms to find a way to optimally play the popular game "Flappy Bird".
+In May of 2013, Flappy Bird was released and instantly became a hit.
+The game consists of a bird that is flying through a series of pipes until it either hits the pipes, the ground, or the sky.
+Through this project, we are going to find a way to code a agent that will be able to effectively navigate the game's obstacles.
+
+\section{Background}
+Genetic Algorithms are based on the idea of swapping genes in strands of DNA to similuate the process of natural selection.
+The idea of genetic algorithms stems from the work of Charles Darwin and his ideas of evolution and natural selection.
+Computer scientists took these ideas and used them in the field of AI. \cite{Jacobson}
+Inside a genetic algorithm, there are two main ways to modify a strand of DNA.
+The first is through the process of mutations.
+In mutations, this means that some of the values in the string will be randomly changed.
+The second way to change the string of DNA is through the process of crossover.
+In crossover, 2 strands of DNA will be swapped with each other.
+Both of these methods will help provide genetic diversity and give the agent a change to be effective in the game.
+
+\section{Details}
+\subsection{Problem Description}
+This would be a interesting project to work on as it would be a fun way to beat a game that was a large part of society at one point.
+The problem that we will be tackling is finding a way to keep the bird alive for an extended period of time without hitting an obstacles.
+Additionally, this app was known for being difficult to get a high score on, so it would be an engaging task to create an algorithm that can score well.
+\subsection{Approach}
+In order to solve this problem, we will be using a genetic algorithm. 
+There will be a few things that we will need to take into consideration when building this algorithm.
+The most important one is to make sure that the agent will be positioned to be in the middle of the to pipes when it goes between them.
+This means that the agent will need to either tap if it is too low or not tap if it is too high.
+Additionally, we need to sure that the agent doesn't hit the ground or the sky.
+\subsection{Software}
+The software that we will be using for this project includes a open-source repository taht already has a working FlappyBird game.
+This repository build the game in python using the pygame library.
+For coding a genetic algorithm, we will also be using python.
+
+\section{Peliminary Work}
+\section{Evaluation}
+\section{Time Frame}
+
+
 %%
 %% The next two lines define the bibliography style to be used, and
 %% the bibliography file.
 \bibliographystyle{ACM-Reference-Format}
-\bibliography{sample-base}
+\bibliography{project}
 
 
 
