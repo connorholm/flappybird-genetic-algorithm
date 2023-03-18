@@ -184,8 +184,9 @@ Inside a genetic algorithm, there are two main ways to modify a strand of DNA.
 The first is through the process of mutations.
 In mutations, this means that some of the values in the string will be randomly changed.
 The second way to change the string of DNA is through the process of crossover.
-In crossover, 2 strands of DNA will be swapped with each other.
+In crossover, 2 strands of DNA will be swapped with each other. \cite{Ventura}
 Both of these methods will help provide genetic diversity and give the agent a change to be effective in the game.
+We found genetic algorithms to be the a great way to solve this problem because it is already being used in applications for machine learning, image processing, routing problems, and optimization problems. \cite{Alam}
 
 \section{Details}
 \subsection{Problem Description}
@@ -208,17 +209,19 @@ We haven't done any preliminary work on this project ourselves. As mentioned abo
 we will be using a open-source repository that already has a working FlappyBird game allowing us to focus on the genetic algorithm.
 If we were to use a mobile game version or a precompiled version we would have to spend a nontrivial amount of time figuring out effective ways to interact with the game,
 such as having to perform image processing to determine the position of the bird and the pipes.
+
 \section{Evaluation}
 Our evluation is quite simple for this game, since the only thing that we are trying to do is keep the bird alive for as long as possible.
 We often times can just use score as a good evaluation metric for how well the agent is doing.
-And since we are using a genetic algorithm, we can just use the score as a fitness function.
+And since we are using a genetic algorithm, we can just use the score as a fitness function. \cite{Russell}
 In this variation of the game it may be possible that the agent may not ever finish the game and will perpetually keep playing since difficulty doesn't scale.
 In this case we will just put a time limit on the game and if the agent reaches it then we will just end the game.
+
 \section{Time Frame}
 Since we don't need to worry about building the game itself, we can focus on the genetic algorithm.
-Our first step is to choose the specific genetic algorithm that we will be using.%TODO DATE
-We will then need to implement the genetic algorithm and test it.%TODO DATE
-Lastly, we will need to complete the final report by the end of the semester.%TODO DATE
+Our first step is to choose the specific genetic algorithm that we will be using. %TODO DATE
+We will then need to implement the genetic algorithm and test it. %TODO DATE
+Lastly, we will need to complete the final report by the end of the semester. %TODO DATE
 
 %%
 %% The next two lines define the bibliography style to be used, and
