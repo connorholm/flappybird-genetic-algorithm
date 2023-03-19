@@ -199,8 +199,10 @@ There will be a few things that we will need to take into consideration when bui
 The most important one is to make sure that the agent will be positioned to be in the middle of the to pipes when it goes between them.
 This means that the agent will need to either tap if it is too low or not tap if it is too high.
 Additionally, we need to sure that the agent doesn't hit the ground or the sky.
+Sensor data such as the distance vectors to the next low and high pipe as well as the distance to ground and sky will need to be given to the agent.
+The agent's choice on when to jump will be based on a weights decided by genetic algorithm of the given sensor data, much like the algorithm descirbed in "Artificial Intelligence: A Modern Approach"\cite{Russell}
 \subsection{Software}
-The software that we will be using for this project includes a open-source repository taht already has a working FlappyBird game.
+The software that we will be using for this project includes a open-source repository that already has a working FlappyBird game.
 This repository build the game in python using the pygame library.
 For coding a genetic algorithm, we will also be using python.
 
