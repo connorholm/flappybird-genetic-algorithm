@@ -174,50 +174,50 @@
 Our project proposal revolves around the idea of using genetic algorithms to find a way to optimally play the popular game "Flappy Bird".
 In May of 2013, Flappy Bird was released and instantly became a hit.
 The game consists of a bird that is flying through a series of pipes until it either hits the pipes, the ground, or the sky.
-Through this project, we are going to find a way to code a agent that will be able to effectively navigate the game's obstacles.
+Through this project, we are going to find a way to code an agent that will be able to effectively navigate the game's obstacles.
 
 \section{Background}
-Genetic Algorithms are based on the idea of swapping genes in strands of DNA to similuate the process of natural selection.
+Genetic Algorithms are based on the idea of swapping genes in strands of DNA to simulate the process of natural selection.
 The idea of genetic algorithms stems from the work of Charles Darwin and his ideas of evolution and natural selection.
 Computer scientists took these ideas and used them in the field of AI. \cite{Jacobson}
 Inside a genetic algorithm, there are two main ways to modify a strand of DNA.
 The first is through the process of mutations.
 In mutations, this means that some of the values in the string will be randomly changed.
 The second way to change the string of DNA is through the process of crossover.
-In crossover, 2 strands of DNA will be swapped with each other. \cite{Ventura}
+In a crossover, 2 strands of DNA will be swapped with each other. \cite{Ventura}
 Both of these methods will help provide genetic diversity and give the agent a change to be effective in the game.
-We found genetic algorithms to be the a great way to solve this problem because it is already being used in applications for machine learning, image processing, routing problems, and optimization problems. \cite{Alam}
+We found genetic algorithms to be a great way to solve this problem because it is already being used in applications for machine learning, image processing, routing problems, and optimization problems. \cite{Alam}
 
 \section{Details}
 \subsection{Problem Description}
-This would be a interesting project to work on as it would be a fun way to beat a game that was a large part of society at one point.
-The problem that we will be tackling is finding a way to keep the bird alive for an extended period of time without hitting an obstacles.
+This would be an interesting project to work on as it would be a fun way to beat a game that was a large part of society at one point.
+The problem that we will be tackling is finding a way to keep the bird alive for an extended period of time without hitting obstacles.
 Additionally, this app was known for being difficult to get a high score on, so it would be an engaging task to create an algorithm that can score well.
 \subsection{Approach}
 In order to solve this problem, we will be using a genetic algorithm. 
 There will be a few things that we will need to take into consideration when building this algorithm.
-The most important one is to make sure that the agent will be positioned to be in the middle of the to pipes when it goes between them.
+The most important one is to make sure that the agent will be positioned to be in the middle of the two pipes when it goes between them.
 This means that the agent will need to either tap if it is too low or not tap if it is too high.
 Additionally, we need to sure that the agent doesn't hit the ground or the sky.
-Sensor data such as the distance vectors to the next low and high pipe as well as the distance to ground and sky will need to be given to the agent.
-The agent's choice on when to jump will be based on a weights decided by genetic algorithm of the given sensor data, much like the algorithm descirbed in "Artificial Intelligence: A Modern Approach"\cite{Russell}
+Sensor data such as the distance vectors to the next low and high pipe as well as the distance to ground and the sky will need to be given to the agent.
+The agent's choice of when to jump will be based on weights decided by the genetic algorithm of the given sensor data, much like the algorithm described in "Artificial Intelligence: A Modern Approach"\cite{Russell}
 \subsection{Software}
-The software that we will be using for this project includes a open-source repository that already has a working FlappyBird game.
-This repository build the game in python using the pygame library.
+The software that we will be using for this project includes an open-source repository that already has a working FlappyBird game.
+This repository builds the game in python using the pygame library.
 For coding a genetic algorithm, we will also be using python.
 
-\section{Peliminary Work}
+\section{Preliminary Work}
 We haven't done any preliminary work on this project ourselves. As mentioned above, 
-we will be using a open-source repository that already has a working FlappyBird game allowing us to focus on the genetic algorithm.
+we will be using an open-source repository that already has a working FlappyBird game allowing us to focus on the genetic algorithm.
 If we were to use a mobile game version or a precompiled version we would have to spend a nontrivial amount of time figuring out effective ways to interact with the game,
 such as having to perform image processing to determine the position of the bird and the pipes.
 
 \section{Evaluation}
-Our evluation is quite simple for this game, since the only thing that we are trying to do is keep the bird alive for as long as possible.
-We often times can just use score as a good evaluation metric for how well the agent is doing.
+Our evaluation is quite simple for this game, since the only thing that we are trying to do is keep the bird alive for as long as possible.
+We oftentimes can just use the score as a good evaluation metric for how well the agent is doing.
 And since we are using a genetic algorithm, we can just use the score as a fitness function. \cite{Russell}
 In this variation of the game it may be possible that the agent may not ever finish the game and will perpetually keep playing since difficulty doesn't scale.
-In this case we will just put a time limit on the game and if the agent reaches it then we will just end the game.
+In this case, we will just put a time limit on the game and if the agent reaches it then we will just end the game.
 
 \section{Time Frame}
 Since we don't need to worry about building the game itself, we can focus on the genetic algorithm.
