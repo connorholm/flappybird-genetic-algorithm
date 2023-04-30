@@ -14,28 +14,28 @@ GAME_SOUNDS = {}
 PLAYER = 'gallery/sprites/bird.png'
 BACKGROUND = 'gallery/sprites/wide_background.png'
 PIPE = 'gallery/sprites/pipe.png'
+NUM_PLAYERS = 5
 
 def closest_pipe(playerx, pipes):
     pipe0X = playerx - pipes[0]['x']
     pipe1X = playerx - pipes[1]['x']
 
-    if (pipe0X > GAME_SPRITES['player'].get_width()):
+    if (pipe0X > GAME_SPRITES['player0'].get_width()):
         return 1
     else:
         return 0
 
-    # if pipe0X < pipe1X:
-    #     return 0
-    # else:
-    #     return 1
 
 def welcomeScreen():
     """
     Shows welcome images on the screen
     """
 
+    for i in range(NUM_PLAYERS):
+        GAME_SPRITES['player' + str(i)] = pygame.image.load(PLAYER).convert_alpha()
+
     playerx = int(SCREENWIDTH / 5)
-    playery = int((SCREENHEIGHT - GAME_SPRITES['player'].get_height()) / 2)
+    playery = int((SCREENHEIGHT - GAME_SPRITES['player0'].get_height()) / 2)
     messagex = int((SCREENWIDTH - GAME_SPRITES['message'].get_width()) / 2)
     messagey = int(SCREENHEIGHT * 0.13)
     basex = 0
@@ -51,17 +51,25 @@ def welcomeScreen():
                 return
             else:
                 SCREEN.blit(GAME_SPRITES['background'], (0, 0))
-                SCREEN.blit(GAME_SPRITES['player'], (playerx, playery))
+                SCREEN.blit(GAME_SPRITES['player0'], (playerx, playery))
                 SCREEN.blit(GAME_SPRITES['message'], (messagex, messagey))
                 SCREEN.blit(GAME_SPRITES['base'], (basex, GROUNDY))
                 pygame.display.update()
                 FPSCLOCK.tick(FPS)
 
 
-def mainGame():
-    score = 0
-    playerx = int(SCREENWIDTH / 5)
-    playery = int(SCREENHEIGHT / 2)
+def mainGame(input_params):
+    playerAlive = {}
+    for i in range(NUM_PLAYERS):
+        playerAlive[i] = True
+    playerScore = {}
+    for i in range(NUM_PLAYERS):
+        playerScore[i] = 0
+    playersx = {}
+    playersy = {}
+    for i in range(NUM_PLAYERS):
+        playersx[i] = int(SCREENWIDTH / 5)
+        playersy[i] = int(SCREENHEIGHT / 2)
     basex = 0
 
     # Create 2 pipes for blitting on the screen
@@ -81,13 +89,18 @@ def mainGame():
 
     pipeVelX = -4
 
-    playerVelY = -9
+    playersVelY = {}
+    for i in range(NUM_PLAYERS):
+        playersVelY[i] = -9
     playerMaxVelY = 10
     playerMinVelY = -8
     playerAccY = 1
 
     playerFlapAccv = -8  # velocity while flapping
-    playerFlapped = False  # It is true only when the bird is flapping
+
+    playerFlapped = {}
+    for i in range(NUM_PLAYERS):
+        playerFlapped[i] = False
 
     while True:
         for event in pygame.event.get():
@@ -95,45 +108,65 @@ def mainGame():
                 pygame.quit()
                 sys.exit()
             if event.type == KEYDOWN and (event.key == K_SPACE or event.key == K_UP):
-                if playery > 0:
-                    playerVelY = playerFlapAccv
-                    playerFlapped = True
-                    GAME_SOUNDS['wing'].play()
+                # flap when user clicks
+                for i in range(NUM_PLAYERS):
+                    if playersy[i] > 0:
+                        playersVelY[i] = playerFlapAccv
+                        playerFlapped[i] = True
+                        # GAME_SOUNDS['wing'].play()
 
-        crashTest = isCollide(playerx, playery, upperPipes,
-                              lowerPipes)  # This function will return true if the player is crashed
-        if crashTest:
-            return
-
-        # check if player is above the top of the lower pipe
-        modifying_var = -60
-        pipeHeight = GAME_SPRITES['pipe'][0].get_height()
-        height = lowerPipes[closest_pipe(playerx, lowerPipes)]['y'] + modifying_var
-        print(playery + GAME_SPRITES['player'].get_height())
-        if playery > height:
-            print(height)
-            # flap the bird
-            playerVelY = playerFlapAccv
-            playerFlapped = True
-            GAME_SOUNDS['wing'].play()
+        # check for collisions
+        for i in range(NUM_PLAYERS):
+            crashTest = isCollide(playersx[i], playersy[i], upperPipes,
+                                  lowerPipes, i)
+            if crashTest:
+                playerAlive[i] = False
+                # turn off the player sprite
+                GAME_SPRITES['player' + str(i)].fill((0, 0, 0, 0))
 
 
-            # check for score
-        playerMidPos = playerx + GAME_SPRITES['player'].get_width() / 2
-        for pipe in upperPipes:
-            pipeMidPos = pipe['x'] + GAME_SPRITES['pipe'][0].get_width() / 2
-            if pipeMidPos <= playerMidPos < pipeMidPos + 4:
-                score += 1
-                print(f"Your score is {score}")
-                GAME_SOUNDS['point'].play()
 
-        if playerVelY < playerMaxVelY and not playerFlapped:
-            playerVelY += playerAccY
 
-        if playerFlapped:
-            playerFlapped = False
-        playerHeight = GAME_SPRITES['player'].get_height()
-        playery = playery + min(playerVelY, GROUNDY - playery - playerHeight)
+        # check for if every player is dead
+        allDead = True
+        for i in range(NUM_PLAYERS):
+            if playerAlive[i]:
+                allDead = False
+                break
+        if allDead:
+            # return the scores along with the starting parameter
+            return playerScore, input_params
+
+        # this takes the input param that we will optimizing over many generations
+        # the param decides how much above the lower pipe the bird should be to flap
+        height = {}
+        for i in range(NUM_PLAYERS):
+            height[i] = lowerPipes[closest_pipe(playersx[i], lowerPipes)]['y'] + input_params[i]
+            if playersy[i] > height[i]:
+                playersVelY[i] = playerFlapAccv
+                playerFlapped[i] = True
+                # GAME_SOUNDS['wing'].play()
+
+
+        # check for score
+        for i in range(NUM_PLAYERS):
+            playerMidPos = playersx[i] + GAME_SPRITES['player' + str(i)].get_width() / 2
+            for pipe in upperPipes:
+                pipeMidPos = pipe['x'] + GAME_SPRITES['pipe'][0].get_width() / 2
+                if pipeMidPos <= playerMidPos < pipeMidPos + 4 and playerAlive[i]:
+                    playerScore[i] += 1
+                    print(f"Your score is {playerScore[i]}")
+                    # GAME_SOUNDS['point'].play()
+
+        for i in range(NUM_PLAYERS):
+            if playersVelY[i] < playerMaxVelY and not playerFlapped[i]:
+                playersVelY[i] += playerAccY
+
+        for i in range(NUM_PLAYERS):
+            if playerFlapped[i]:
+                playerFlapped[i] = False
+            playerHeight = GAME_SPRITES['player' + str(i)].get_height()
+            playersy[i] = playersy[i] + min(playersVelY[i], GROUNDY - playersy[i] - playerHeight)
 
         # move pipes to the left
         for upperPipe, lowerPipe in zip(upperPipes, lowerPipes):
@@ -158,8 +191,13 @@ def mainGame():
             SCREEN.blit(GAME_SPRITES['pipe'][1], (lowerPipe['x'], lowerPipe['y']))
 
         SCREEN.blit(GAME_SPRITES['base'], (basex, GROUNDY))
-        SCREEN.blit(GAME_SPRITES['player'], (playerx, playery))
-        myDigits = [int(x) for x in list(str(score))]
+        for i in range(NUM_PLAYERS):
+            SCREEN.blit(GAME_SPRITES['player' + str(i)], (playersx[i], playersy[i]))
+        max = 0
+        for i in range(NUM_PLAYERS):
+            if playerScore[i] > max:
+                max = playerScore[i]
+        myDigits = [int(x) for x in list(str(max))]
         width = 0
         for digit in myDigits:
             width += GAME_SPRITES['numbers'][digit].get_width()
@@ -172,21 +210,21 @@ def mainGame():
         FPSCLOCK.tick(FPS)
 
 
-def isCollide(playerx, playery, upperPipes, lowerPipes):
+def isCollide(playerx, playery, upperPipes, lowerPipes, playerNum):
     if playery > GROUNDY - 25 or playery < 0:
-        GAME_SOUNDS['hit'].play()
+        # GAME_SOUNDS['hit'].play()
         return True
 
     for pipe in upperPipes:
         pipeHeight = GAME_SPRITES['pipe'][0].get_height()
         if (playery < pipeHeight + pipe['y'] and abs(playerx - pipe['x']) < GAME_SPRITES['pipe'][0].get_width()):
-            GAME_SOUNDS['hit'].play()
+            # GAME_SOUNDS['hit'].play()
             return True
 
     for pipe in lowerPipes:
-        if (playery + GAME_SPRITES['player'].get_height() > pipe['y']) and abs(playerx - pipe['x']) < \
+        if (playery + GAME_SPRITES['player' + str(playerNum)].get_height() > pipe['y']) and abs(playerx - pipe['x']) < \
                 GAME_SPRITES['pipe'][0].get_width():
-            GAME_SOUNDS['hit'].play()
+            # GAME_SOUNDS['hit'].play()
             return True
 
     return False
@@ -240,8 +278,18 @@ if __name__ == "__main__":
     GAME_SOUNDS['wing'] = pygame.mixer.Sound('gallery/audio/wing.wav')
 
     GAME_SPRITES['background'] = pygame.image.load(BACKGROUND).convert()
-    GAME_SPRITES['player'] = pygame.image.load(PLAYER).convert_alpha()
+    # create multiple players
+    for i in range(NUM_PLAYERS):
+        GAME_SPRITES['player' + str(i)] = pygame.image.load(PLAYER).convert_alpha()
+
 
     while True:
         welcomeScreen()  # Shows welcome screen to the user until he presses a button
-        mainGame()  # This is the main game function
+        modifying_values = {}
+        for i in range(NUM_PLAYERS):
+            # generate random values as input for the population
+            modifying_values[i] = random.randint(-200, 200)
+        scores, input = mainGame(modifying_values)  # This is the main game function
+        
+        for i in range(NUM_PLAYERS):
+            print("Player " + str(i) + " score is " + str(scores[i]) + " and input is " + str(input[i]))
