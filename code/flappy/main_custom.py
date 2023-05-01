@@ -2,25 +2,26 @@ import random  # For generating random numbers
 import sys  # We will use sys.exit to exit the program
 import pygame
 from pygame.locals import *  # Basic pygame imports
+import numpy as np
 
 # Global Variables for the game
+# FPS = 128 # for a faster game
 FPS = 32
-SCREENWIDTH = 400
+SCREENWIDTH = 289
 SCREENHEIGHT = 511
 SCREEN = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT))
 GROUNDY = SCREENHEIGHT * 0.8
 GAME_SPRITES = {}
 GAME_SOUNDS = {}
 PLAYER = 'gallery/sprites/bird.png'
-BACKGROUND = 'gallery/sprites/wide_background.png'
+BACKGROUND = 'gallery/sprites/background.png'
 PIPE = 'gallery/sprites/pipe.png'
-NUM_PLAYERS = 5
+NUM_PLAYERS = 20
 
-def closest_pipe(playerx, pipes):
+def closest_pipe(playerx, pipes, param):
     pipe0X = playerx - pipes[0]['x']
-    pipe1X = playerx - pipes[1]['x']
 
-    if (pipe0X > GAME_SPRITES['player0'].get_width()):
+    if (pipe0X > param):
         return 1
     else:
         return 0
@@ -31,8 +32,6 @@ def welcomeScreen():
     Shows welcome images on the screen
     """
 
-    for i in range(NUM_PLAYERS):
-        GAME_SPRITES['player' + str(i)] = pygame.image.load(PLAYER).convert_alpha()
 
     playerx = int(SCREENWIDTH / 5)
     playery = int((SCREENHEIGHT - GAME_SPRITES['player0'].get_height()) / 2)
@@ -59,6 +58,9 @@ def welcomeScreen():
 
 
 def mainGame(input_params):
+    for i in range(NUM_PLAYERS):
+        GAME_SPRITES['player' + str(i)] = pygame.image.load(PLAYER).convert_alpha()
+
     playerAlive = {}
     for i in range(NUM_PLAYERS):
         playerAlive[i] = True
@@ -141,7 +143,7 @@ def mainGame(input_params):
         # the param decides how much above the lower pipe the bird should be to flap
         height = {}
         for i in range(NUM_PLAYERS):
-            height[i] = lowerPipes[closest_pipe(playersx[i], lowerPipes)]['y'] + input_params[i]
+            height[i] = lowerPipes[closest_pipe(playersx[i], lowerPipes, input_params[i][1])]['y'] + input_params[i][0]
             if playersy[i] > height[i]:
                 playersVelY[i] = playerFlapAccv
                 playerFlapped[i] = True
@@ -155,7 +157,6 @@ def mainGame(input_params):
                 pipeMidPos = pipe['x'] + GAME_SPRITES['pipe'][0].get_width() / 2
                 if pipeMidPos <= playerMidPos < pipeMidPos + 4 and playerAlive[i]:
                     playerScore[i] += 1
-                    print(f"Your score is {playerScore[i]}")
                     # GAME_SOUNDS['point'].play()
 
         for i in range(NUM_PLAYERS):
@@ -245,6 +246,38 @@ def getRandomPipe():
     ]
     return pipe
 
+def getNewPopulation(scores, input_parameters, natural_selection_constant = 5):
+    best_scores_index = sorted(range(len(scores)), key=lambda i: scores[i])[-natural_selection_constant:]
+
+    top_parameters = []
+    for i in range(natural_selection_constant):
+        top_parameters.append(input_parameters[best_scores_index[i]])
+
+    new_population = {}
+    for i in range(NUM_PLAYERS):
+        # randomly select two different parents
+        parent1 = random.choice(top_parameters)
+        parent2 = random.choice(top_parameters)
+        while parent1 == parent2:
+            parent2 = random.choice(top_parameters)
+
+        mean_values = []
+        sd_values = []
+        for j in range(len(parent1)):
+            mean_values.append((parent1[j] + parent2[j])/2)
+            sd_values.append(abs(parent1[j] - parent2[j])/2)
+
+        new_member_params = {}
+        for j in range(len(mean_values)):
+            new_member_params[j] = np.random.normal(mean_values[j], sd_values[j])
+
+        new_population[i] = new_member_params
+
+    return new_population
+
+
+
+
 
 if __name__ == "__main__":
     # This will be the main point from where our game will start
@@ -265,7 +298,7 @@ if __name__ == "__main__":
     )
 
     GAME_SPRITES['message'] = pygame.image.load('gallery/sprites/message.png').convert_alpha()
-    GAME_SPRITES['base'] = pygame.image.load('gallery/sprites/wide_base.png').convert_alpha()
+    GAME_SPRITES['base'] = pygame.image.load('gallery/sprites/base.png').convert_alpha()
     GAME_SPRITES['pipe'] = (pygame.transform.rotate(pygame.image.load(PIPE).convert_alpha(), 180),
                             pygame.image.load(PIPE).convert_alpha()
                             )
@@ -282,14 +315,25 @@ if __name__ == "__main__":
     for i in range(NUM_PLAYERS):
         GAME_SPRITES['player' + str(i)] = pygame.image.load(PLAYER).convert_alpha()
 
+    welcomeScreen()  # Shows welcome screen to the user until he presses a button
 
+    # create an initial population
+    modifying_values = {}
+    for i in range(NUM_PLAYERS):
+        # generate random values as input for the population
+        modifying_values[i] = [
+            random.randint(-200, 200),
+            random.randint(-100, 100)
+        ]
+
+    j = 1
     while True:
-        welcomeScreen()  # Shows welcome screen to the user until he presses a button
-        modifying_values = {}
-        for i in range(NUM_PLAYERS):
-            # generate random values as input for the population
-            modifying_values[i] = random.randint(-200, 200)
         scores, input = mainGame(modifying_values)  # This is the main game function
-        
+
+        print("Generation " + str(j))
         for i in range(NUM_PLAYERS):
             print("Player " + str(i) + " score is " + str(scores[i]) + " and input is " + str(input[i]))
+        j += 1
+
+        modifying_values = getNewPopulation(scores, input, 5)
+
