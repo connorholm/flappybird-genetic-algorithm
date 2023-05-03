@@ -3,6 +3,7 @@ import sys  # We will use sys.exit to exit the program
 import pygame
 from pygame.locals import *  # Basic pygame imports
 import numpy as np
+import matplotlib.pyplot as plt
 
 # Global Variables for the game
 # FPS = 128 # for a faster game
@@ -17,6 +18,9 @@ PLAYER = 'gallery/sprites/bird.png'
 BACKGROUND = 'gallery/sprites/background.png'
 PIPE = 'gallery/sprites/pipe.png'
 NUM_PLAYERS = 20
+NATURAL_SELECTION_CONSTANT = 5
+CONVERGENT_POINT = 6
+
 
 def closest_pipe(playerx, pipes, param):
     pipe0X = playerx - pipes[0]['x']
@@ -223,8 +227,7 @@ def isCollide(playerx, playery, upperPipes, lowerPipes, playerNum):
             return True
 
     for pipe in lowerPipes:
-        if (playery + GAME_SPRITES['player' + str(playerNum)].get_height() > pipe['y']) and abs(playerx - pipe['x']) < \
-                GAME_SPRITES['pipe'][0].get_width():
+        if (playery + GAME_SPRITES['player' + str(playerNum)].get_height() > pipe['y']) and abs(playerx - pipe['x']) < GAME_SPRITES['pipe'][0].get_width():
             # GAME_SOUNDS['hit'].play()
             return True
 
@@ -322,18 +325,82 @@ if __name__ == "__main__":
     for i in range(NUM_PLAYERS):
         # generate random values as input for the population
         modifying_values[i] = [
-            random.randint(-200, 200),
-            random.randint(-100, 100)
+            random.randint(-400, 400),
+            random.randint(-200, 200)
         ]
 
+    result_data = []
+    convergent_point = CONVERGENT_POINT
     j = 1
-    while True:
-        scores, input = mainGame(modifying_values)  # This is the main game function
+    while j <= convergent_point:
+        scores, input = mainGame(modifying_values)
 
+        generation_data = []
         print("Generation " + str(j))
         for i in range(NUM_PLAYERS):
             print("Player " + str(i) + " score is " + str(scores[i]) + " and input is " + str(input[i]))
+            generation_data.append([input[i][0], input[i][1], scores[i]])
+        result_data.append(generation_data)
         j += 1
 
-        modifying_values = getNewPopulation(scores, input, 5)
+        modifying_values = getNewPopulation(scores, input, NATURAL_SELECTION_CONSTANT)
+
+    scores_last = []
+    param1_last = []
+    param2_last = []
+    for i in range(NUM_PLAYERS):
+        scores_last.append(result_data[convergent_point - 1][i][2])
+        param1_last.append(result_data[convergent_point - 1][i][0])
+        param2_last.append(result_data[convergent_point - 1][i][1])
+
+    # display data from the last generation
+    bins = 10
+    fig, (ax1, ax2) = plt.subplots(1, 2, sharey=True)
+    ax1.hist(param1_last, bins=bins)
+    ax1.set_title('Histogram of Parameter 1')
+    ax1.set_ylabel('Frequency')
+    ax1.set_xlabel('Parameter Value')
+    ax2.hist(param2_last, bins=bins)
+    ax2.set_title('Histogram of Parameter 2')
+    ax2.set_xlabel('Parameter Value')
+    ax2.set_ylabel('Frequency')
+    fig.suptitle('Generation ' + str(convergent_point) + ' Statistics')
+    plt.show()
+
+    # show from first generation
+
+    scores_first = []
+    param1_first = []
+    param2_first = []
+    for i in range(NUM_PLAYERS):
+        scores_first.append(result_data[0][i][2])
+        param1_first.append(result_data[0][i][0])
+        param2_first.append(result_data[0][i][1])
+
+    bins = 10
+    fig, (ax1, ax2) = plt.subplots(1, 2, sharey=True)
+    ax1.hist(param1_first, bins=bins)
+    ax1.set_title('Histogram of Parameter 1')
+    ax1.set_ylabel('Frequency')
+    ax1.set_xlabel('Parameter Value')
+    ax2.hist(param2_first, bins=bins)
+    ax2.set_title('Histogram of Parameter 2')
+    ax2.set_xlabel('Parameter Value')
+    ax2.set_ylabel('Frequency')
+    fig.suptitle('Generation ' + str(1) + ' Statistics')
+    plt.show()
+
+    # find the average score from each generation
+    average_scores = []
+    for i in range(CONVERGENT_POINT):
+        average_scores.append(np.mean([result_data[i][j][2] for j in range(NUM_PLAYERS)]))
+
+    # plot the average scores
+    plt.plot(range(1, CONVERGENT_POINT + 1), average_scores)
+    plt.xlabel('Generation')
+    plt.ylabel('Average Score for All Agents')
+    plt.title('Average Score vs Generation')
+    plt.show()
+
+
 
