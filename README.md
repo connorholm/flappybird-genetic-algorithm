@@ -1,10 +1,9 @@
-# CSCI 4511W Final Project
+# Flappy Bird Genetic Algorithm
 
-- I added a main_custom.py file that we can start to edit to create a genetic algorithm
-- If you run it right now, I added an algorithm that creates a population with random parameters. Through natural selection, a better population is generated and optimized.
+This is a modified Flappy Bird game that can run multiple agents inside the environment of the game.
+Throughout multiple generations, the agents will slowly optimize to the surrounding obstacles.
 
-Using the vscode extension "LaTeX Workshop" for compiling and viewing the pdf
+![multiple agents](./multiple_agents.png)
+![optimization agent](./optimization_pic.png)
 
-# Resources - Generating Ideas
-
-- https://heartbeat.comet.ml/ai-bot-plays-the-flappy-bird-game-1a2fcc730445
+Check out the [research paper](CSCI4511W_Final_Project_Writeup.pdf) written about this repository.
